@@ -42,8 +42,8 @@ WAVE_B = (23, 90, 117)
 WAVE_C = (27, 107, 130)
 WHITE = (250, 248, 240)
 
-SUN_CX, SUN_CY = 688, 248
-SUN_R = 186
+SUN_CX, SUN_CY = 690, 256
+SUN_R = 208
 
 
 def lerp(a, b, t):
@@ -280,46 +280,49 @@ def ladder(cv, base_l, top_l, base_r, top_r, rungs=8):
 
 def figure(cv):
     """Clockmaker in a dark-blue kimono, enlarged ~15% and leaning into the
-    key, both hands on the ring, flowing red headband and sash tail."""
+    key, both hands on the ring, flowing red headband and sash tail. The
+    whole figure is lifted so the head sits inside the key ring's opening —
+    the ring frames the head like a halo instead of hiding behind it."""
     # both arms reach up to the key ring (drawn first, behind the body)
-    cv.thick_line(545, 376, 512, 306, INK, 20)
-    cv.thick_line(545, 376, 512, 306, KIMONO, 14)
-    cv.fill_circle(510, 302, 10, SKIN)
-    cv.thick_line(598, 378, 608, 294, INK, 20)
-    cv.thick_line(598, 378, 608, 294, KIMONO, 14)
-    cv.fill_circle(611, 290, 10, SKIN)
+    cv.thick_line(545, 361, 512, 291, INK, 20)
+    cv.thick_line(545, 361, 512, 291, KIMONO, 14)
+    cv.fill_circle(510, 287, 10, SKIN)
+    cv.thick_line(598, 363, 608, 279, INK, 20)
+    cv.thick_line(598, 363, 608, 279, KIMONO, 14)
+    cv.fill_circle(611, 275, 10, SKIN)
     # legs + feet
-    cv.fill_rect(549, 472, 564, 509, INK)
-    cv.fill_rect(578, 472, 593, 509, INK)
-    cv.ellipse(559, 512, 11, 5, INK)
-    cv.ellipse(587, 512, 11, 5, INK)
+    cv.fill_rect(549, 457, 564, 494, INK)
+    cv.fill_rect(578, 457, 593, 494, INK)
+    cv.ellipse(559, 497, 11, 5, INK)
+    cv.ellipse(587, 497, 11, 5, INK)
     # kimono body: flared trapezoid
-    body = [(538, 360), (602, 362), (619, 478), (521, 478)]
+    body = [(538, 345), (602, 347), (619, 463), (521, 463)]
     cv.fill_poly(body, KIMONO)
     cv.stroke_poly(body, INK, 4)
     # cream collar V
-    cv.fill_poly([(559, 362), (582, 362), (570, 412)], CREAM)
-    cv.thick_line(559, 362, 570, 412, INK, 2)
-    cv.thick_line(582, 362, 570, 412, INK, 2)
+    cv.fill_poly([(559, 347), (582, 347), (570, 397)], CREAM)
+    cv.thick_line(559, 347, 570, 397, INK, 2)
+    cv.thick_line(582, 347, 570, 397, INK, 2)
     # red sash
-    cv.fill_poly([(529, 408), (611, 408), (614, 433), (526, 433)], RED)
-    cv.thick_line(529, 408, 611, 408, INK, 2)
-    cv.thick_line(526, 433, 614, 433, INK, 2)
+    cv.fill_poly([(529, 393), (611, 393), (614, 418), (526, 418)], RED)
+    cv.thick_line(529, 393, 611, 393, INK, 2)
+    cv.thick_line(526, 418, 614, 418, INK, 2)
     # flowing sash tail streaming to the right
-    tail = [(610, 414), (646, 406), (652, 424), (612, 430)]
+    tail = [(610, 399), (646, 391), (652, 409), (612, 415)]
     cv.fill_poly(tail, RED)
     cv.stroke_poly(tail, INK, 3)
-    # head: hair cap, face, topknot (shifted slightly left, leaning in)
-    cv.fill_circle(566, 320, 23, INK)
-    cv.fill_circle(567, 329, 20, SKIN)
-    cv.fill_circle(566, 293, 9, INK)
-    cv.thick_line(566, 301, 566, 310, RED, 3)
-    cv.fill_circle(559, 328, 2, INK)
-    cv.fill_circle(574, 328, 2, INK)
+    # head: hair cap, face, topknot — framed inside the key ring
+    cv.fill_circle(566, 305, 23, INK)
+    cv.fill_circle(567, 314, 20, SKIN)
+    cv.fill_circle(566, 278, 9, INK)
+    cv.thick_line(566, 286, 566, 295, RED, 3)
+    cv.fill_circle(559, 313, 2, INK)
+    cv.fill_circle(574, 313, 2, INK)
     # flowing red headband across the forehead, ribbons trailing left
-    cv.thick_line(546, 313, 588, 311, RED, 6)
-    cv.bezier((548, 313), (528, 302), (512, 308), (500, 320), RED, 4)
-    cv.bezier((548, 318), (530, 320), (514, 328), (504, 340), RED, 4)
+    # inside the ring's opening
+    cv.thick_line(546, 298, 588, 296, RED, 6)
+    cv.bezier((548, 298), (530, 290), (520, 294), (516, 304), RED, 4)
+    cv.bezier((548, 303), (532, 306), (526, 312), (524, 318), RED, 4)
 
 
 def apprentice(cv):
@@ -392,25 +395,27 @@ def draw():
     # horizon: a bold fiery-orange strip (ukiyo-e bokashi band) glowing
     # across the whole width behind the wave crests
     for y in range(0, 570):
-        if y < 445:
-            c = lerp(NAVY, NAVY2, y / 445.0)
-        elif y < 490:
-            c = lerp(NAVY2, (214, 132, 48), (y - 445) / 45.0)
+        if y < 420:
+            c = lerp(NAVY, NAVY2, y / 420.0)
+        elif y < 480:
+            c = lerp(NAVY2, (224, 142, 54), (y - 420) / 60.0)
         else:
-            c = lerp((214, 132, 48), NAVY2, (y - 490) / 80.0)
+            c = lerp((224, 142, 54), NAVY2, (y - 480) / 90.0)
         cv.hline(0, W - 1, y, c)
 
-    # --- v4 flash: radial golden glow behind the sun, then a sunburst ---
-    radial_glow(cv, SUN_CX, SUN_CY, SUN_R + 230, (222, 162, 62))
-    sunburst(cv, SUN_CX, SUN_CY, SUN_R + 2, SUN_R + 55, 18, GOLD, (206, 156, 58))
+    # --- v5 flash: radial golden glow behind the sun, then a sunburst ---
+    radial_glow(cv, SUN_CX, SUN_CY, SUN_R + 320, (222, 162, 62))
+    sunburst(cv, SUN_CX, SUN_CY, SUN_R + 2, SUN_R + 70, 18, GOLD, (206, 156, 58))
 
     # stars (skip the sun disc and the clouds)
     for _ in range(150):
         x = rng.randint(4, W - 4)
         y = rng.randint(4, 540)
-        if math.hypot(x - SUN_CX, y - SUN_CY) < 250:
+        if math.hypot(x - SUN_CX, y - SUN_CY) < 275:
             continue
-        if 60 < x < 300 and 130 < y < 260:
+        if 70 < x < 225 and 55 < y < 205:
+            continue
+        if 110 < x < 330 and 235 < y < 315:
             continue
         if 800 < x < 1000 and 400 < y < 520:
             continue
@@ -435,7 +440,7 @@ def draw():
     for _ in range(2200):
         x = rng.randint(0, W - 1)
         y = rng.randint(0, 560)
-        if math.hypot(x - SUN_CX, y - SUN_CY) < 310:
+        if math.hypot(x - SUN_CX, y - SUN_CY) < 460:
             continue
         c = (18, 38, 72) if rng.random() < 0.5 else (10, 24, 48)
         cv.hline(x, x, y, c)
@@ -470,16 +475,21 @@ def draw():
     cv.ring(556, 290, 53, GOLD_L, 5)
 
     # --- secondary gear meshing with the sun's lower-left rim ---
-    gear_teeth(cv, 448, 368, 52, 66, 12, GOLD_D)
-    cv.fill_circle(448, 368, 56, INK)
-    cv.fill_circle(448, 368, 52, GOLD)
-    cv.fill_circle(448, 368, 40, GOLD_L)
-    cv.ring(448, 368, 30, BRASS_D, 3)
-    cv.fill_circle(448, 368, 12, INK)
-    cv.fill_circle(448, 368, 8, GOLD_D)
+    gear_teeth(cv, 435, 380, 52, 66, 12, GOLD_D)
+    cv.fill_circle(435, 380, 56, INK)
+    cv.fill_circle(435, 380, 52, GOLD)
+    cv.fill_circle(435, 380, 40, GOLD_L)
+    cv.ring(435, 380, 30, BRASS_D, 3)
+    cv.fill_circle(435, 380, 12, INK)
+    cv.fill_circle(435, 380, 8, GOLD_D)
 
-    # --- clouds: cream/gold ukiyo-e bands + one bold red banner cloud ---
-    cloud_band(cv, 175, 195, 230, 64, CREAM)
+    # --- clouds: a bold red disc fills the empty upper left, cream/gold
+    # ukiyo-e bands below it, one bold red banner cloud ---
+    cv.fill_circle(148, 128, 66, INK)
+    cv.fill_circle(148, 128, 61, RED)
+    cv.fill_circle(148, 128, 46, (226, 84, 58))
+    cv.ring(148, 128, 52, (160, 36, 24), 3)
+    cloud_band(cv, 215, 275, 210, 56, CREAM)
     cloud_band(cv, 905, 462, 170, 48, GOLD_PALE)
     cloud_band(cv, 150, 430, 290, 68, RED)
 
@@ -487,14 +497,20 @@ def draw():
     wave_layer(cv, 566, WAVE_A, 55, 112, 20)
     wave_layer(cv, 628, WAVE_B, 48, 98, 64)
     wave_layer(cv, 688, WAVE_C, 42, 86, 30)
-    # foam: white arcs tracing some crest tops (every other crest on the
-    # middle layer, every crest on the front layer, thinner there)
-    for top_y, crest_r, spacing, off, step, wdt in ((628, 48, 98, 64, 2, 4),
-                                                    (688, 42, 86, 30, 1, 3)):
+    # foam: white arcs tracing some crest tops, with a glowing turquoise
+    # under-arc on the front layer — the second luminous band
+    for top_y, crest_r, spacing, off, step, wdt, glow in (
+            (628, 48, 98, 64, 2, 4, False),
+            (688, 42, 86, 30, 1, 3, True)):
         x = off
         n = 0
         while x < W + spacing:
             if n % step == 0:
+                if glow:
+                    cv.arc(x, top_y, crest_r - 6, math.radians(205),
+                           math.radians(335), TURQ, 10)
+                    cv.arc(x, top_y, crest_r - 6, math.radians(205),
+                           math.radians(335), (110, 232, 216), 5)
                 cv.arc(x, top_y, crest_r - 6, math.radians(205),
                        math.radians(335), WHITE, wdt)
             x += spacing
