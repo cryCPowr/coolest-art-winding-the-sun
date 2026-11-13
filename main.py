@@ -21,15 +21,15 @@ W, H = 1024, 768
 SEED = 20261113
 
 # ---------------------------------------------------------------- palette
-NAVY = (14, 30, 58)        # deep night sky, top
-NAVY2 = (24, 44, 82)       # sky near the horizon
+NAVY = (10, 22, 46)         # deep night sky, top (deepened for contrast)
+NAVY2 = (18, 36, 70)        # sky near the horizon
 GOLD = (232, 182, 76)
 GOLD_L = (255, 211, 77)
-GOLD_PALE = (255, 224, 138)
+GOLD_PALE = (255, 238, 175)
 GOLD_D = (166, 124, 46)    # brass / gear teeth
 BRASS_D = (140, 102, 34)
 CREAM = (245, 234, 208)
-RED = (192, 57, 43)
+RED = (206, 58, 38)
 TURQ = (46, 196, 182)
 INK = (10, 18, 38)         # outlines
 SKIN = (232, 195, 154)
@@ -279,38 +279,47 @@ def ladder(cv, base_l, top_l, base_r, top_r, rungs=8):
 
 
 def figure(cv):
-    """Clockmaker in a dark-blue kimono, enlarged, both hands on the key ring."""
+    """Clockmaker in a dark-blue kimono, enlarged ~15% and leaning into the
+    key, both hands on the ring, flowing red headband and sash tail."""
     # both arms reach up to the key ring (drawn first, behind the body)
-    cv.thick_line(548, 384, 512, 306, INK, 17)
-    cv.thick_line(548, 384, 512, 306, KIMONO, 12)
-    cv.fill_circle(510, 302, 9, SKIN)
-    cv.thick_line(594, 386, 608, 294, INK, 17)
-    cv.thick_line(594, 386, 608, 294, KIMONO, 12)
-    cv.fill_circle(611, 290, 9, SKIN)
+    cv.thick_line(545, 376, 512, 306, INK, 20)
+    cv.thick_line(545, 376, 512, 306, KIMONO, 14)
+    cv.fill_circle(510, 302, 10, SKIN)
+    cv.thick_line(598, 378, 608, 294, INK, 20)
+    cv.thick_line(598, 378, 608, 294, KIMONO, 14)
+    cv.fill_circle(611, 290, 10, SKIN)
     # legs + feet
-    cv.fill_rect(552, 468, 565, 500, INK)
-    cv.fill_rect(577, 468, 590, 500, INK)
-    cv.ellipse(560, 502, 11, 5, INK)
-    cv.ellipse(585, 502, 11, 5, INK)
+    cv.fill_rect(549, 472, 564, 509, INK)
+    cv.fill_rect(578, 472, 593, 509, INK)
+    cv.ellipse(559, 512, 11, 5, INK)
+    cv.ellipse(587, 512, 11, 5, INK)
     # kimono body: flared trapezoid
-    body = [(542, 370), (598, 372), (613, 473), (527, 473)]
+    body = [(538, 360), (602, 362), (619, 478), (521, 478)]
     cv.fill_poly(body, KIMONO)
     cv.stroke_poly(body, INK, 4)
     # cream collar V
-    cv.fill_poly([(560, 372), (580, 372), (570, 415)], CREAM)
-    cv.thick_line(560, 372, 570, 415, INK, 2)
-    cv.thick_line(580, 372, 570, 415, INK, 2)
+    cv.fill_poly([(559, 362), (582, 362), (570, 412)], CREAM)
+    cv.thick_line(559, 362, 570, 412, INK, 2)
+    cv.thick_line(582, 362, 570, 412, INK, 2)
     # red sash
-    cv.fill_poly([(534, 412), (606, 412), (608, 434), (532, 434)], RED)
-    cv.thick_line(534, 412, 606, 412, INK, 2)
-    cv.thick_line(532, 434, 608, 434, INK, 2)
-    # head: hair cap, face, topknot
-    cv.fill_circle(570, 335, 20, INK)
-    cv.fill_circle(571, 343, 17, SKIN)
-    cv.fill_circle(570, 312, 8, INK)
-    cv.thick_line(570, 319, 570, 327, RED, 3)
-    cv.fill_circle(564, 342, 2, INK)
-    cv.fill_circle(577, 342, 2, INK)
+    cv.fill_poly([(529, 408), (611, 408), (614, 433), (526, 433)], RED)
+    cv.thick_line(529, 408, 611, 408, INK, 2)
+    cv.thick_line(526, 433, 614, 433, INK, 2)
+    # flowing sash tail streaming to the right
+    tail = [(610, 414), (646, 406), (652, 424), (612, 430)]
+    cv.fill_poly(tail, RED)
+    cv.stroke_poly(tail, INK, 3)
+    # head: hair cap, face, topknot (shifted slightly left, leaning in)
+    cv.fill_circle(566, 320, 23, INK)
+    cv.fill_circle(567, 329, 20, SKIN)
+    cv.fill_circle(566, 293, 9, INK)
+    cv.thick_line(566, 301, 566, 310, RED, 3)
+    cv.fill_circle(559, 328, 2, INK)
+    cv.fill_circle(574, 328, 2, INK)
+    # flowing red headband across the forehead, ribbons trailing left
+    cv.thick_line(546, 313, 588, 311, RED, 6)
+    cv.bezier((548, 313), (528, 302), (512, 308), (500, 320), RED, 4)
+    cv.bezier((548, 318), (530, 320), (514, 328), (504, 340), RED, 4)
 
 
 def apprentice(cv):
@@ -320,10 +329,12 @@ def apprentice(cv):
     cv.thick_line(430, 694, 452, 668, INK, 11)
     cv.thick_line(430, 694, 452, 668, KIMONO_D, 7)
     cv.fill_circle(453, 666, 4, SKIN)
-    # lantern glow + lantern
-    cv.fill_circle(458, 652, 12, GOLD_PALE)
-    cv.fill_circle(458, 652, 7, GOLD_L)
-    cv.fill_circle(458, 652, 3, INK)
+    # lantern: a real glowing lantern — big soft halo, bright body, dark core
+    cv.fill_circle(458, 652, 24, GOLD_PALE)
+    cv.fill_circle(458, 652, 15, GOLD_L)
+    cv.fill_circle(458, 652, 9, GOLD)
+    cv.ring(458, 652, 10, INK, 3)
+    cv.fill_circle(458, 652, 4, INK)
     # other arm hanging at the side
     cv.thick_line(400, 694, 394, 716, INK, 11)
     cv.thick_line(400, 694, 394, 716, KIMONO_D, 7)
@@ -345,15 +356,53 @@ def apprentice(cv):
     cv.fill_circle(420, 676, 1, INK)
 
 
+def radial_glow(cv, cx, cy, r_max, inner, steps=26):
+    """Soft radial glow: concentric rings fading from `inner` gold out to the
+    local sky colour, so the sun radiates instead of sitting flat."""
+    sky = lerp(NAVY, NAVY2, min(1.0, cy / 520.0))
+    for k in range(steps, 0, -1):
+        r = r_max * k / steps
+        t = (1.0 - k / steps) ** 1.5
+        cv.fill_circle(cx, cy, r, lerp(sky, inner, t))
+
+
+def sunburst(cv, cx, cy, r0, r1, rays, c1, c2):
+    """Bold alternating golden rays bursting from behind the sun,
+    ukiyo-e sunburst style: long/short wedges, crisp against the glow."""
+    for i in range(rays):
+        a = 2 * math.pi * i / rays
+        half = math.radians(2.2)
+        rr = r1 if i % 2 == 0 else r1 * 0.85
+        c = c1 if i % 2 == 0 else c2
+        pts = [(cx + r0 * math.cos(a - half), cy + r0 * math.sin(a - half)),
+               (cx + rr * math.cos(a - half * 0.3),
+                cy + rr * math.sin(a - half * 0.3)),
+               (cx + rr * math.cos(a + half * 0.3),
+                cy + rr * math.sin(a + half * 0.3)),
+               (cx + r0 * math.cos(a + half), cy + r0 * math.sin(a + half))]
+        cv.fill_poly(pts, c)
+
+
 # ---------------------------------------------------------------- drawing
 def draw():
     rng = random.Random(SEED)
     cv = Canvas(W, H)
 
-    # sky: vertical gradient
+    # sky: vertical gradient, deep navy up top, a warm gold bump at the
+    # horizon: a bold fiery-orange strip (ukiyo-e bokashi band) glowing
+    # across the whole width behind the wave crests
     for y in range(0, 570):
-        t = y / 570.0
-        cv.hline(0, W - 1, y, lerp(NAVY, NAVY2, t))
+        if y < 445:
+            c = lerp(NAVY, NAVY2, y / 445.0)
+        elif y < 490:
+            c = lerp(NAVY2, (214, 132, 48), (y - 445) / 45.0)
+        else:
+            c = lerp((214, 132, 48), NAVY2, (y - 490) / 80.0)
+        cv.hline(0, W - 1, y, c)
+
+    # --- v4 flash: radial golden glow behind the sun, then a sunburst ---
+    radial_glow(cv, SUN_CX, SUN_CY, SUN_R + 230, (222, 162, 62))
+    sunburst(cv, SUN_CX, SUN_CY, SUN_R + 2, SUN_R + 55, 18, GOLD, (206, 156, 58))
 
     # stars (skip the sun disc and the clouds)
     for _ in range(150):
@@ -382,10 +431,12 @@ def draw():
         cv.thick_line(x, y - 6, x, y + 6, c, 1)
         cv.fill_circle(x, y, 2, c)
 
-    # woodblock grain in the sky: sparse speckles
+    # woodblock grain in the sky: sparse speckles (not on the glow / rays)
     for _ in range(2200):
         x = rng.randint(0, W - 1)
         y = rng.randint(0, 560)
+        if math.hypot(x - SUN_CX, y - SUN_CY) < 310:
+            continue
         c = (18, 38, 72) if rng.random() < 0.5 else (10, 24, 48)
         cv.hline(x, x, y, c)
 
@@ -395,6 +446,7 @@ def draw():
     cv.fill_circle(SUN_CX, SUN_CY, SUN_R, GOLD)             # disc
     cv.fill_circle(SUN_CX, SUN_CY, 128, GOLD_L)             # inner glow
     cv.fill_circle(SUN_CX, SUN_CY, 70, GOLD_PALE)           # hot centre
+    cv.fill_circle(SUN_CX, SUN_CY, 38, (255, 244, 200))     # burning core
     cv.ring(SUN_CX, SUN_CY, 150, INK, 3)                    # engraved ring
     cv.ring(SUN_CX, SUN_CY, 96, BRASS_D, 3)
     # speckles on the disc
@@ -426,10 +478,10 @@ def draw():
     cv.fill_circle(448, 368, 12, INK)
     cv.fill_circle(448, 368, 8, GOLD_D)
 
-    # --- clouds: cream/gold ukiyo-e bands + one small red puff ---
+    # --- clouds: cream/gold ukiyo-e bands + one bold red banner cloud ---
     cloud_band(cv, 175, 195, 230, 64, CREAM)
     cloud_band(cv, 905, 462, 170, 48, GOLD_PALE)
-    puff_cloud(cv, 150, 430, RED)
+    cloud_band(cv, 150, 430, 290, 68, RED)
 
     # --- waves ---
     wave_layer(cv, 566, WAVE_A, 55, 112, 20)
